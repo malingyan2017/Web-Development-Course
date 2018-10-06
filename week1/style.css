@@ -1,0 +1,26 @@
+table, th, td {
+    border: 1px solid black;
+}
+
+tbody tr:nth-of-type(odd) {
+    background-color: lightgreen;
+}
+
+tbody tr:nth-of-type(even) {
+    background-color: lightblue;
+}
+
+.outer-content {
+    background-color: pink;
+    width: 75%;
+    top: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.inner-content {
+    background-color: lightblue;
+    width: 75%;
+    text-align: center;
+    margin: auto;
+}
