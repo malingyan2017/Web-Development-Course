@@ -27,8 +27,6 @@ app.post('/', function(req,res){
   for (var p in req.body){
     qParams.push({'name':p,'value':req.body[p]})
   }
-  console.log(qParams);
-  console.log(req.body);
   var context = {};
   context.dataList = qParams;
   context.reqType = 'POST';
