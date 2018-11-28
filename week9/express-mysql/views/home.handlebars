@@ -1,2 +1,61 @@
-<h1>MySQL Results:</h1>
-<p>{{results}}</p>
+<form>
+    <br />
+    <fieldset>
+        <legend>Add exercise:</legend>
+        <label>Name:
+            <input type="text" id="name" name="name" size="30" maxlength="255" required>
+        </label>
+        <br />
+        <label>Repeats:
+          <input type="number" id="reps" name="reps" min="1" max="1000" value="12" required>
+        </label>
+        <br />
+        <label>Weight:
+          <input type="number" id="weight" name="weight" min="1" max="300" value="25" required>
+        </label>
+        <br />
+        <label>Date:
+          <input type="date" id="date" name="date" required>
+        </label>
+        <p>Unit:
+            <br />
+            <label>
+                <input type="radio" name="unit" value="1" checked/>lbs</label>
+            <label>
+                <input type="radio" name="unit" value="0" />kg</label>
+        </p>
+        <input type="submit" value="Submit" onclick="createExercise(event);" />
+    </fieldset>
+</form>
+
+<h1>Your workouts:</h1>
+<table id="workouts">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Repeats</th>
+      <th>Weight</th>
+      <th>Date</th>
+      <th>Unit</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#if exercises}}
+    {{#each exercises}}
+    <tr>
+      <td>{{this.name}}</td>
+      <td>{{this.reps}}</td>
+      <td>{{this.weight}}</td>
+      <td>{{this.date}}</td>
+      {{#if this.lbs}}
+      <td>lbs</td>
+      {{else}}
+      <td>kg</td>
+      {{/if}}
+      <td><button onclick="deleteExercise({{this.id}}, this)">Delete</button></td>
+      <td><button>Edit</button></td>
+    </tr>
+    {{/each}}
+    {{/if}}
+  </tbody>
+</table>

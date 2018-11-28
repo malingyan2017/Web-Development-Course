@@ -1,23 +1,55 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var mysql = require('./dbcon.js');
 
 var app = express();
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 
+app.use(express.static('public'));
+app.use(bodyParser.json());
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 app.set('port', 3000);
 
 app.get('/',function(req,res,next){
   var context = {};
-  mysql.pool.query('SELECT * FROM todo', function(err, rows, fields){
+  mysql.pool.query('SELECT * FROM workouts', function(err, rows, fields){
     if(err){
       next(err);
       return;
     }
-    context.results = JSON.stringify(rows);
+    context.exercises = rows;
     res.render('home', context);
   });
+});
+
+app.post('/createExercise', function(req, res, next) {
+  var exercise = {
+    name: req.body.name,
+    reps: req.body.reps,
+    weight: req.body.weight,
+    date: req.body.date,
+    lbs: req.body.unit
+  };
+  mysql.pool.query(
+    "INSERT INTO workouts SET ?", exercise, function(err, result) {
+    if (err) {
+      next(err);
+      return;
+    }
+    res.json({ success: 1, id: result.insertId });
+  })
+});
+
+app.post('/deleteExercise', function(req, res, next) {
+  var id = req.body.id;
+  mysql.pool.query("DELETE FROM workouts WHERE id=?", [id], function(err, result) {
+    if (err) {
+      next(err);
+      return;
+    }
+    res.json({ success: 1 });
+  })
 });
 
 app.get('/insert',function(req,res,next){
