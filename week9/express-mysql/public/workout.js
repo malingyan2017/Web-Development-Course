@@ -1,7 +1,14 @@
 function createExercise(event) {
     var req = new XMLHttpRequest();
     var payload = { name: null, reps: null, weight: null, date: null, unit: null };
-    payload.name = document.getElementById('name').value;
+    var nameInput = document.getElementById('name');
+    if (!nameInput.validity.valid) {
+        alert('name is required');
+        event.preventDefault();
+        return;
+    }
+  
+    payload.name = nameInput.value;
     payload.reps = document.getElementById('reps').value;
     payload.weight = document.getElementById('weight').value;
     payload.date = document.getElementById('date').value;
@@ -54,15 +61,105 @@ function createExercise(event) {
                 deleteBtnRow.appendChild(deleteBtn);
 
                 var editBtnRow = row.insertCell(6);
+                var editForm = document.createElement('form');
+                editForm.method = 'get';
+                editForm.action = '/edit';
+
+                var hiddenId = document.createElement('input');
+                hiddenId.type = 'hidden';
+                hiddenId.id = 'id';
+                hiddenId.name = 'id';
+                hiddenId.value = resp.id;
+                editForm.appendChild(hiddenId);
+
+                var hiddenName = document.createElement('input');
+                hiddenName.type = 'hidden';
+                hiddenName.id = 'name';
+                hiddenName.name = 'name';
+                hiddenName.value = payload.name;
+                editForm.appendChild(hiddenName);
+
+                var hiddenReps = document.createElement('input');
+                hiddenReps.type = 'hidden';
+                hiddenReps.id = 'reps';
+                hiddenReps.name = 'reps';
+                hiddenReps.value = payload.reps;
+                editForm.appendChild(hiddenReps);
+
+                var hiddenWeight = document.createElement('input');
+                hiddenWeight.type = 'hidden';
+                hiddenWeight.id = 'weight';
+                hiddenWeight.name = 'weight';
+                hiddenWeight.value = payload.weight;
+                editForm.appendChild(hiddenWeight);
+
+                var hiddenDate = document.createElement('input');
+                hiddenDate.type = 'hidden';
+                hiddenDate.id = 'date';
+                hiddenDate.name = 'date';
+                hiddenDate.value = payload.date;
+                editForm.appendChild(hiddenDate);
+
+                var hiddenUnit = document.createElement('input');
+                hiddenUnit.type = 'hidden';
+                hiddenUnit.id = 'unit';
+                hiddenUnit.name = 'unit';
+                hiddenUnit.value = payload.unit;
+                editForm.appendChild(hiddenUnit);
+
                 var editBtn = document.createElement('button');
+                editBtn.type = 'submit';
                 editBtn.appendChild(document.createTextNode('Edit'));
-                //deleteBtn.addEventListener('click', deleteExercise(resp.id, deleteBtn));
-                editBtnRow.appendChild(editBtn);
+                editForm.appendChild(editBtn);
+                editBtnRow.appendChild(editForm);
 
                 return;
             }
         }
         alert("fail to create exercise");
+    });
+    req.send(JSON.stringify(payload));
+    event.preventDefault();
+}
+
+function updateExercise(event) {
+    var req = new XMLHttpRequest();
+    var payload = { id: null, name: null, reps: null, weight: null, date: null, unit: null };
+    payload.id = document.getElementById('id').value;
+
+    var nameInput = document.getElementById('name');
+    if (!nameInput.validity.valid) {
+        alert('name is required');
+        event.preventDefault();
+        return;
+    }
+    payload.name = nameInput.value;
+    
+    payload.reps = document.getElementById('reps').value;
+    payload.weight = document.getElementById('weight').value;
+    payload.date = document.getElementById('date').value;
+
+    var units = document.getElementsByName('unit');
+    for (var unit of units) {
+        if (unit.checked) {
+            payload.unit = unit.value;
+            break;
+        }
+    }
+
+    req.open('POST', './updateExercise');
+    req.setRequestHeader('Content-Type', 'application/json');
+    req.addEventListener('load', function() {
+        let msg = 'unknown error';
+        if (req.status >= 200 && req.status < 400) {
+            var resp = JSON.parse(req.responseText);
+            if (resp.success) {
+                window.location.replace("/");
+                return;
+            } 
+            msg = resp.reason;
+        }
+        alert("fail to update exercise: " + msg);
     });
     req.send(JSON.stringify(payload));
     event.preventDefault();

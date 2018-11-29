@@ -1,31 +1,31 @@
 <form>
+  <br />
+  <fieldset>
+    <legend>Add exercise:</legend>
+    <label>Name:
+      <input type="text" id="name" name="name" size="30" maxlength="255" required>
+    </label>
     <br />
-    <fieldset>
-        <legend>Add exercise:</legend>
-        <label>Name:
-            <input type="text" id="name" name="name" size="30" maxlength="255" required>
-        </label>
-        <br />
-        <label>Repeats:
-          <input type="number" id="reps" name="reps" min="1" max="1000" value="12" required>
-        </label>
-        <br />
-        <label>Weight:
-          <input type="number" id="weight" name="weight" min="1" max="300" value="25" required>
-        </label>
-        <br />
-        <label>Date:
-          <input type="date" id="date" name="date" required>
-        </label>
-        <p>Unit:
-            <br />
-            <label>
-                <input type="radio" name="unit" value="1" checked/>lbs</label>
-            <label>
-                <input type="radio" name="unit" value="0" />kg</label>
-        </p>
-        <input type="submit" value="Submit" onclick="createExercise(event);" />
-    </fieldset>
+    <label>Repeats:
+      <input type="number" id="reps" name="reps" min="1" max="1000" value="12" required>
+    </label>
+    <br />
+    <label>Weight:
+      <input type="number" id="weight" name="weight" min="1" max="300" value="25" required>
+    </label>
+    <br />
+    <label>Date:
+      <input type="date" id="date" name="date" required>
+    </label>
+    <p>Unit:
+      <br />
+      <label>
+        <input type="radio" name="unit" value="1" checked />lbs</label>
+      <label>
+        <input type="radio" name="unit" value="0" />kg</label>
+    </p>
+    <input type="submit" value="Submit" onclick="createExercise(event);" />
+  </fieldset>
 </form>
 
 <h1>Your workouts:</h1>
@@ -53,7 +53,17 @@
       <td>kg</td>
       {{/if}}
       <td><button onclick="deleteExercise({{this.id}}, this)">Delete</button></td>
-      <td><button>Edit</button></td>
+      <td>
+        <form method="get" action="/edit">
+          <input type="hidden" id="id" name="id" value="{{this.id}}">
+          <input type="hidden" id="name" name="name" value="{{this.name}}">
+          <input type="hidden" id="reps" name="reps" value="{{this.reps}}">
+          <input type="hidden" id="weight" name="weight" value="{{this.weight}}">
+          <input type="hidden" id="date" name="date" value="{{this.date}}">
+          <input type="hidden" id="unit" name="unit" value="{{this.lbs}}">
+          <button type="submit">Edit</button>
+        </form>
+      </td>
     </tr>
     {{/each}}
     {{/if}}

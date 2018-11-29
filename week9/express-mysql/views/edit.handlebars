@@ -1,0 +1,42 @@
+<form>
+  <br />
+  <fieldset>
+    <legend>Edit exercise:</legend>
+    <label>Name:
+      <input type="text" id="name" name="name" size="30" maxlength="255" required
+        value="{{this.name}}">
+    </label>
+    <br />
+    <label>Repeats:
+      <input type="number" id="reps" name="reps" min="1" max="1000" value="12" required
+        value="{{this.reps}}">
+    </label>
+    <br />
+    <label>Weight:
+      <input type="number" id="weight" name="weight" min="1" max="300" value="25" required
+      value="{{this.weight}}">
+    </label>
+    <br />
+    <label>Date:
+      <input type="date" id="date" name="date" required value="{{this.date}}">
+    </label>
+    <p>Unit:
+      <br />
+      <label>
+        <input type="radio" name="unit" value="1" 
+        {{#if this.lbs}}
+        checked 
+        {{/if}}
+        />lbs</label>
+      <label>
+        <input type="radio" name="unit" value="0" 
+        {{#unless this.lbs}}
+        checked
+        {{/unless}}
+        />kg</label>
+    </p>
+    <input type="hidden" id="id" name="id" value="{{this.id}}">
+    <input type="submit" value="Submit" onclick="updateExercise(event);" />
+  </fieldset>
+</form>
+</table>
