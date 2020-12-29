@@ -1,9 +1,4 @@
 # This repository is for course cs290
 
-1. First ordered list item
-2. Another item
-   * Unordered sub-list. 
-1. Actual numbers don't matter, just that it's a number
-   1. Ordered sub-list
-4. And another item.
-check check
+Here is my website I made as my final assignment: http://people.oregonstate.edu/~maling/
+It is a website developed with HTML, CSS and JavaScript
